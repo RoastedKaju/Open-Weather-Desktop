@@ -7,6 +7,7 @@ set VCPKG_EXE=Vendor\VCPKG\vcpkg.exe
 REM Check if vcpkg.exe exists
 if not exist %VCPKG_EXE% (
 	echo [ERROR] vcpkg.exe not found, please run "Vendor/VCPKG/bootstrap-vcpkg.bat"
+	pause
 	exit /b 1
 )
 
@@ -15,7 +16,8 @@ echo Installing glfw3, glad and opengl...
 %VCPKG_EXE% install glfw3 glad
 
 if %errorlevel% neq 0 (
-	echo [ERROR] glfw3 installation failed
+	echo [ERROR] glfw3, glad and opengl installation failed
+	pause
 	exit /b 1
 )
 
