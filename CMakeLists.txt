@@ -20,5 +20,8 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 
+# Add subdirectory for ImGUI
+add_subdirectory(Vendor/ImGUI)
+
 # Link GLFW
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad::glad OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad::glad OpenGL::GL imgui)
