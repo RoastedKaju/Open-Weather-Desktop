@@ -23,5 +23,8 @@ find_package(OpenGL REQUIRED)
 # Add subdirectory for ImGUI
 add_subdirectory(Vendor/ImGUI)
 
+# Add subdirectory for ImPlot
+add_subdirectory(Vendor/ImPlot)
+
 # Link GLFW
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad::glad OpenGL::GL imgui)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad::glad OpenGL::GL imgui implot)

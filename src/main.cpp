@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -6,6 +7,16 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <implot.h>
+
+// Data to plot
+void GenerateSineData(float* x, float* y, int count)
+{
+	for (int i = 0; i < count; ++i) {
+		x[i] = i * 0.1f;
+		y[i] = sinf(x[i]);
+	}
+}
 
 int main()
 {
@@ -44,10 +55,16 @@ int main()
 	// ImGUI example
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::StyleColorsLight();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+
+	// Sine wave data
+	const int data_count = 100;
+	float x[data_count], y[data_count];
+	GenerateSineData(x, y, data_count);
 
 	// render loop
 	while (!glfwWindowShouldClose(window))
@@ -66,6 +83,12 @@ int main()
 
 		//Update ImGUI
 		ImGui::Begin("Open Weather GUI", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+		// Show a simple ImPlot window
+		if (ImPlot::BeginPlot("Sine Wave")) 
+		{
+			ImPlot::PlotLine("sin(x)", x, y, data_count);
+			ImPlot::EndPlot();
+		}
 		ImGui::End();
 
 		// Render
