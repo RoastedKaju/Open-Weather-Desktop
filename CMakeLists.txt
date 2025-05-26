@@ -13,12 +13,13 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 endif()
 
 # Add executeable
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp "src/HttpModule.h" "src/HttpModule.cpp" "src/Common.h")
 
 # Find GLFW via VCPKG
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(CURL REQUIRED)
 
 # Add subdirectory for ImGUI
 add_subdirectory(Vendor/ImGUI)
@@ -27,4 +28,10 @@ add_subdirectory(Vendor/ImGUI)
 add_subdirectory(Vendor/ImPlot)
 
 # Link GLFW
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad::glad OpenGL::GL imgui implot)
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+	glfw
+	glad::glad
+	OpenGL::GL
+	imgui
+	implot
+	CURL::libcurl)

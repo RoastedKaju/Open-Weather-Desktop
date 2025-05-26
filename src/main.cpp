@@ -9,6 +9,8 @@
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
 
+#include "HttpModule.h"
+
 // Data to plot
 void GenerateSineData(float* x, float* y, int count)
 {

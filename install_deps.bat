@@ -12,15 +12,15 @@ if not exist %VCPKG_EXE% (
 )
 
 REM install GLFW
-echo Installing glfw3, glad and opengl...
-%VCPKG_EXE% install glfw3 glad
+echo Installing dependencies...
+%VCPKG_EXE% install glfw3 glad curl
 
 if %errorlevel% neq 0 (
-	echo [ERROR] glfw3, glad and opengl installation failed
+	echo [ERROR] Installation failed
 	pause
 	exit /b 1
 )
 
-echo [SUCCESS] glfw3, glad and opengl installed successfully.
+echo [SUCCESS] Dependencies installed successfully.
 endlocal
 pause
