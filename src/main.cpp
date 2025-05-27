@@ -10,6 +10,7 @@
 #include <implot.h>
 
 #include "HttpModule.h"
+#include "JsonModule.h"
 
 // Data to plot
 void GenerateSineData(float* x, float* y, int count)
@@ -22,6 +23,10 @@ void GenerateSineData(float* x, float* y, int count)
 
 int main()
 {
+	HttpModule httpModule;
+	JsonModule jsonModule;
+	httpModule.GetForecast("35", "139");
+
 	if (!glfwInit())
 	{
 		std::cout << "GLFW failed." << std::endl;

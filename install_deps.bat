@@ -13,7 +13,7 @@ if not exist %VCPKG_EXE% (
 
 REM install GLFW
 echo Installing dependencies...
-%VCPKG_EXE% install glfw3 glad curl
+%VCPKG_EXE% install glfw3 glad curl jsoncpp
 
 if %errorlevel% neq 0 (
 	echo [ERROR] Installation failed
