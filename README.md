@@ -1,4 +1,5 @@
-﻿﻿# ⛅ Open Weather Desktop
+﻿﻿
+# ⛅ Open Weather Desktop
 
 A Desktop weather application that connects to [OpenWeatherAPI](https://openweathermap.org) and reterives realtime weather data.
 
