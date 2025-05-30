@@ -1,110 +1,90 @@
 #include <iostream>
-#include <cmath>
+#include <vector>
+#include <string>
+#include <Windows.h>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-#include <implot.h>
-
 #include "HttpModule.h"
 #include "JsonModule.h"
+#include "Application.h"
 
-// Data to plot
-void GenerateSineData(float* x, float* y, int count)
+
+void framebuffer_callback(GLFWwindow* window, int width, int height)
 {
-	for (int i = 0; i < count; ++i) {
-		x[i] = i * 0.1f;
-		y[i] = sinf(x[i]);
+	glViewport(0, 0, width, height);
+}
+
+void process_inputs(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, true);
 	}
 }
 
 int main()
 {
-	HttpModule httpModule;
-	JsonModule jsonModule;
-	httpModule.GetForecast("35", "139");
+	// Get a handle to the console window
+	HWND consoleWnd = GetConsoleWindow();
 
-	if (!glfwInit())
-	{
-		std::cout << "GLFW failed." << std::endl;
-		return EXIT_FAILURE;
-	}
+	// Hide the console window
+	ShowWindow(consoleWnd, SW_HIDE);
 
-	// Hints
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwInit();
+	GLFWwindow* window = glfwCreateWindow(800, 600, "OpenWeatherDesktop", nullptr, nullptr);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	
-	GLFWwindow* window = glfwCreateWindow(800, 600, "my window", nullptr, nullptr);
-	if (!window)
-	{
-		std::cout << "Window is NULL" << std::endl;
-		glfwTerminate();
-		return EXIT_FAILURE;
-	}
-
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwMakeContextCurrent(window);
 
-	// Init GLAD
+	if (window == nullptr)
+	{
+		glfwTerminate();
+		std::cout << "failed to create glfw window." << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	// Glad
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cout << "GLAD failed." << std::endl;
+		std::cout << "Failed to initialize glad." << std::endl;
 		glfwTerminate();
 		return EXIT_FAILURE;
 	}
 
 	// Viewport
 	glViewport(0, 0, 800, 600);
+	glfwSetFramebufferSizeCallback(window, framebuffer_callback);
 
-	// ImGUI example
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImPlot::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	ImGui::StyleColorsLight();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	//UI app
+	Application* frontend = new Application(*window);
+	frontend->Init();
 
-	// Sine wave data
-	const int data_count = 100;
-	float x[data_count], y[data_count];
-	GenerateSineData(x, y, data_count);
-
-	// render loop
+	// main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		// process inputs
+		process_inputs(window);
+		// poll events
 		glfwPollEvents();
 
+		// set color
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
-		// Generate new frame for ImGUI
-		ImGui_ImplGlfw_NewFrame();
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui::NewFrame();
-		ImGui::SetNextWindowSize(ImVec2(800, 600));
-		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		// UI
+		frontend->NewFrame();
+		frontend->Update(window);
+		frontend->Render();
 
-		//Update ImGUI
-		ImGui::Begin("Open Weather GUI", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-		// Show a simple ImPlot window
-		if (ImPlot::BeginPlot("Sine Wave")) 
-		{
-			ImPlot::PlotLine("sin(x)", x, y, data_count);
-			ImPlot::EndPlot();
-		}
-		ImGui::End();
-
-		// Render
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+		// swap buffer
 		glfwSwapBuffers(window);
 	}
 
 	glfwTerminate();
-	return 0;
+	frontend->Shutdown();
+	delete frontend;
+	return EXIT_SUCCESS;
 }

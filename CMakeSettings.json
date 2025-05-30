@@ -9,6 +9,16 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=${projectDir}\\Vendor\\VCPKG\\scripts\\buildsystems\\vcpkg.cmake",
       "variables": []
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=${projectDir}\\Vendor\\VCPKG\\scripts\\buildsystems\\vcpkg.cmake",
+      "variables": []
     }
   ]
 }
