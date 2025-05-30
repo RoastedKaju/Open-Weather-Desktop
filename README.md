@@ -2,6 +2,12 @@
 
 A Desktop weather application that connects to [OpenWeatherAPI](https://openweathermap.org) and reterives realtime weather data.
 
+<div align="center">
+  <img src="docs/01.jpg" alt="AppImage01" />
+  <img src="docs/02.jpg" alt="AppImage02" />
+  <img src="docs/03.jpg" alt="AppImage03" />
+</div>
+
 ## 📦 Features
 
 - Realtime weather data
@@ -31,4 +37,4 @@ s_final_url << "http://api.openweathermap.org/data/2.5/onecall?lat=" << lat << "
 		<< "&units=metric&exclude=current,minutely,hourly,alerts&appid=API_KEY";
 ```  
 
-Replace the **API_KEY** with your own._
+Replace the **API_KEY** with your own.
